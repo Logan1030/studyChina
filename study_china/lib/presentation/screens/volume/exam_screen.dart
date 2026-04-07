@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../data/datasources/assets/word_data.dart';
 import '../../../data/models/character_model.dart';
+import '../../../data/services/audio_service.dart';
 import '../../providers/game_provider.dart';
 import '../../providers/volume_provider.dart';
 
@@ -22,6 +23,7 @@ class _ExamScreenState extends ConsumerState<ExamScreen> {
   int correctCount = 0;
   bool isAnswered = false;
   int? selectedIndex;
+  final AudioService _audioService = AudioService();
 
   @override
   void initState() {
@@ -40,6 +42,7 @@ class _ExamScreenState extends ConsumerState<ExamScreen> {
       final correctIndex = options.indexOf(correct.meaning);
       questions.add(Question(
         targetCharacter: correct.character,
+        pinyin: correct.pinyin,
         options: options,
         correctIndex: correctIndex,
       ));
@@ -197,15 +200,37 @@ class _ExamScreenState extends ConsumerState<ExamScreen> {
                     ),
                   ],
                 ),
-                child: Center(
-                  child: Text(
-                    question.targetCharacter,
-                    style: const TextStyle(
-                      fontSize: 80,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      question.targetCharacter,
+                      style: const TextStyle(
+                        fontSize: 80,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
                     ),
-                  ),
+                    const SizedBox(height: 16),
+                    GestureDetector(
+                      onTap: () => _audioService.speakCharacter(
+                        question.targetCharacter,
+                        question.pinyin,
+                      ),
+                      child: Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF2196F3).withOpacity(0.1),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.volume_up,
+                          size: 32,
+                          color: Color(0xFF2196F3),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(height: 32),
@@ -265,11 +290,13 @@ class _ExamScreenState extends ConsumerState<ExamScreen> {
 
 class Question {
   final String targetCharacter;
+  final String pinyin;
   final List<String> options;
   final int correctIndex;
 
   Question({
     required this.targetCharacter,
+    required this.pinyin,
     required this.options,
     required this.correctIndex,
   });
