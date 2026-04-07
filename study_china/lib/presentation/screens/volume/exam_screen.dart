@@ -155,7 +155,7 @@ class _ExamScreenState extends ConsumerState<ExamScreen> {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.close),
-          onPressed: () => context.pop(),
+          onPressed: () => context.canPop() ? context.pop() : context.go('/volume/${(widget.lessonNumber - 1) ~/ 10 + 1}'),
         ),
       ),
       body: SafeArea(

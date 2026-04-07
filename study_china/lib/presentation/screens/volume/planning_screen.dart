@@ -54,7 +54,7 @@ class _PlanningScreenState extends ConsumerState<PlanningScreen> {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.pop(),
+          onPressed: () => context.canPop() ? context.pop() : context.go('/volume/${widget.volumeId}'),
         ),
       ),
       body: SafeArea(
