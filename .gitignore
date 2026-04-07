@@ -1,0 +1,18 @@
+# Images (large binary files)
+*.jpeg
+*.jpg
+*.png
+
+# Playwright artifacts
+.playwright-mcp/
+
+# Flutter build
+study_china/build/
+study_china/.dart_tool/
+study_china/.flutter-plugins-dependencies
+study_china/.flutter-plugins
+study_china/.idea/
+study_china/*.lock
+
+# macOS
+.DS_Store
