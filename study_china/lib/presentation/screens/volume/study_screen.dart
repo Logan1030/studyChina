@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../data/datasources/assets/word_data.dart';
 import '../../../data/models/character_model.dart';
+import '../../../data/services/audio_service.dart';
 import '../../providers/volume_provider.dart';
 
 class StudyScreen extends ConsumerStatefulWidget {
@@ -18,6 +19,7 @@ class _StudyScreenState extends ConsumerState<StudyScreen> {
   late List<Character> characters;
   int currentIndex = 0;
   bool showAnswer = false;
+  final AudioService _audioService = AudioService();
 
   @override
   void initState() {
@@ -112,6 +114,34 @@ class _StudyScreenState extends ConsumerState<StudyScreen> {
                               fontWeight: FontWeight.bold,
                               color: Colors.black87,
                             ),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        // Speaker button
+                        GestureDetector(
+                          onTap: () => _audioService.speakCharacter(
+                            currentChar.character,
+                            currentChar.pinyin,
+                          ),
+                          child: Container(
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF4CAF50).withOpacity(0.1),
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(
+                              Icons.volume_up,
+                              size: 40,
+                              color: Color(0xFF4CAF50),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          '点击听发音',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey[400],
                           ),
                         ),
                         const SizedBox(height: 24),
