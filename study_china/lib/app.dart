@@ -2,29 +2,57 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'core/theme/app_theme.dart';
-import 'presentation/screens/home/home_screen.dart';
-import 'presentation/screens/lesson/lesson_selection_screen.dart';
-import 'presentation/screens/game/game_screen.dart';
+import 'presentation/screens/volume/volume_selection_screen.dart';
+import 'presentation/screens/volume/lesson_list_screen.dart';
+import 'presentation/screens/volume/module_select_screen.dart';
+import 'presentation/screens/volume/study_screen.dart';
+import 'presentation/screens/volume/exam_screen.dart';
+import 'presentation/screens/volume/planning_screen.dart';
 import 'presentation/screens/wrong_notebook/wrong_notebook_screen.dart';
 import 'presentation/screens/settings/settings_screen.dart';
 
-// Router instance that can be accessed for test reset
+// Router instance
 final router = GoRouter(
   initialLocation: '/',
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => const HomeScreen(),
+      builder: (context, state) => const VolumeSelectionScreen(),
     ),
     GoRoute(
-      path: '/lessons',
-      builder: (context, state) => const LessonSelectionScreen(),
-    ),
-    GoRoute(
-      path: '/lesson/:number',
+      path: '/volume/:volumeId',
       builder: (context, state) {
-        final number = int.parse(state.pathParameters['number'] ?? '1');
-        return GameScreen(lessonNumber: number);
+        final volumeId = int.parse(state.pathParameters['volumeId'] ?? '1');
+        return LessonListScreen(volumeId: volumeId);
+      },
+    ),
+    GoRoute(
+      path: '/volume/:volumeId/lesson/:lessonNumber',
+      builder: (context, state) {
+        final volumeId = int.parse(state.pathParameters['volumeId'] ?? '1');
+        final lessonNumber = int.parse(state.pathParameters['lessonNumber'] ?? '1');
+        return ModuleSelectScreen(volumeId: volumeId, lessonNumber: lessonNumber);
+      },
+    ),
+    GoRoute(
+      path: '/study/:lessonNumber',
+      builder: (context, state) {
+        final lessonNumber = int.parse(state.pathParameters['lessonNumber'] ?? '1');
+        return StudyScreen(lessonNumber: lessonNumber);
+      },
+    ),
+    GoRoute(
+      path: '/exam/:lessonNumber',
+      builder: (context, state) {
+        final lessonNumber = int.parse(state.pathParameters['lessonNumber'] ?? '1');
+        return ExamScreen(lessonNumber: lessonNumber);
+      },
+    ),
+    GoRoute(
+      path: '/planning/:volumeId',
+      builder: (context, state) {
+        final volumeId = int.parse(state.pathParameters['volumeId'] ?? '1');
+        return PlanningScreen(volumeId: volumeId);
       },
     ),
     GoRoute(
