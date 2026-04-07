@@ -37,10 +37,8 @@ class AudioService {
 
   Future<void> speakCharacter(String character, String pinyin) async {
     await init();
-    // Speak the character first, then the pinyin
+    // Speak the character/word directly
     await _tts.speak(character);
-    await Future.delayed(const Duration(milliseconds: 500));
-    await _tts.speak(pinyin);
   }
 
   Future<void> stop() async {
